@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Define a "forma" (type) que os nossos resultados terão
 type AnalysisResult = {
@@ -42,9 +42,13 @@ function JobOptimizerForm() {
       const data: AnalysisResult = await response.json();
       setAnalysisResult(data);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Se ocorrer um erro na chamada, guarda a mensagem de erro
-      setError(err.message || 'Falha ao conectar com o servidor.');
+      if (err instanceof Error) {
+        setError(err.message || 'Falha ao conectar com o servidor.');
+      } else {
+        setError('Falha ao conectar com o servidor.');
+      }
     } finally {
       // Independentemente do resultado, para o loading
       setIsLoading(false);

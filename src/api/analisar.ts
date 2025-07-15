@@ -71,16 +71,17 @@ export default async function handler(
     try {
       jsonResponse = JSON.parse(cleanedJsonString);
     } catch (parseError) {
-      console.error("Erro ao fazer parse do JSON da IA:", cleanedJsonString);
+      console.error("Erro ao fazer parse do JSON da IA:", cleanedJsonString, parseError);
       throw new Error("A IA retornou uma resposta em formato inválido.");
     }
 
     // Envia a resposta da IA de volta para o nosso front-end
     return response.status(200).json(jsonResponse);
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Se algo der errado, envia uma mensagem de erro detalhada e SEMPRE em formato JSON
     console.error("Erro no handler da API:", error);
-    return response.status(500).json({ error: error.message || 'Ocorreu um erro desconhecido no servidor.' });
+    const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro desconhecido no servidor.';
+    return response.status(500).json({ error: errorMessage });
   }
 }
