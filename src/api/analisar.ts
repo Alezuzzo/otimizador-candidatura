@@ -8,7 +8,7 @@ export default async function handler(
   response: VercelResponse,
 ) {
   // --- INÍCIO DA CORREÇÃO ---
-  // A validação da chave de API foi movida para dentro da função handler.
+  // A validação da chave de API e a inicialização do cliente foram movidas para dentro da função handler.
   const apiKey = process.env.GOOGLE_API_KEY;
 
   // Validação inicial para garantir que a chave de API foi configurada
