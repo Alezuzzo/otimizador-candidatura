@@ -2,26 +2,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Pega a nossa chave de API secreta das variáveis de ambiente
-const apiKey = process.env.GOOGLE_API_KEY;
-
-// Validação inicial para garantir que a chave de API foi configurada
-if (!apiKey) {
-  // Nota: Em produção, não envie o erro detalhado.
-  // Em vez disso, use um logger e envie uma mensagem genérica.
-  console.error("A variável de ambiente GOOGLE_API_KEY não está definida.");
-  // Retorna uma resposta JSON válida em caso de erro de configuração
-  return (response: VercelResponse) => response.status(500).json({ error: "Erro de configuração do servidor." });
-}
-
-// Inicializa o cliente do Google AI com a nossa chave
-const genAI = new GoogleGenerativeAI(apiKey);
-
 // Função principal que será executada quando a nossa API for chamada
 export default async function handler(
   request: VercelRequest,
   response: VercelResponse,
 ) {
+  // --- INÍCIO DA CORREÇÃO ---
+  // A validação da chave de API foi movida para dentro da função handler.
+  const apiKey = process.env.GOOGLE_API_KEY;
+
+  // Validação inicial para garantir que a chave de API foi configurada
+  if (!apiKey) {
+    console.error("A variável de ambiente GOOGLE_API_KEY não está definida.");
+    return response.status(500).json({ error: "Erro de configuração do servidor." });
+  }
+
+  // Inicializa o cliente do Google AI com a nossa chave
+  const genAI = new GoogleGenerativeAI(apiKey);
+  // --- FIM DA CORREÇÃO ---
+
   // Medida de segurança: Apenas aceita requisições do tipo POST
   if (request.method !== 'POST') {
     return response.status(405).json({ error: 'Método não permitido' });
