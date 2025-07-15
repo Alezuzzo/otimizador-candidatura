@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Header() {
   return (
     <header className="bg-slate-800 p-4 shadow-md">

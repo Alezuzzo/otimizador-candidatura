@@ -7,8 +7,7 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse,
 ) {
-  // --- INÍCIO DA CORREÇÃO ---
-  // A validação da chave de API e a inicialização do cliente foram movidas para dentro da função handler.
+  // A validação da chave de API e a inicialização do cliente estão agora DENTRO da função.
   const apiKey = process.env.GOOGLE_API_KEY;
 
   // Validação inicial para garantir que a chave de API foi configurada
@@ -19,7 +18,6 @@ export default async function handler(
 
   // Inicializa o cliente do Google AI com a nossa chave
   const genAI = new GoogleGenerativeAI(apiKey);
-  // --- FIM DA CORREÇÃO ---
 
   // Medida de segurança: Apenas aceita requisições do tipo POST
   if (request.method !== 'POST') {
